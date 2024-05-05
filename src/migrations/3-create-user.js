@@ -31,6 +31,9 @@ module.exports = {
       isActivated: {
         type: Sequelize.BOOLEAN 
       },
+      activationLink: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -97,7 +100,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updatedAt: {  
         allowNull: false,
         type: Sequelize.DATE
       }

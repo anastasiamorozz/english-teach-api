@@ -2,23 +2,23 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
+const { sequelize } = require('./src/models/');
+const AutorizationRouter = require('./src/routes/auth.routes');
+const cookieParser = require("cookie-parser");
+const errorMiddleware = require("./src/middlewares/error.middleware");
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerSpec = require('./swagger');
-
-const { sequelize } = require('./src/models/');
 
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(cors());
-
-// const userRouter = require('./routes/user.routes');
-// const taskRouter = require('./routes/task.routes');
-// const roomRouter = require('./routes/room.routes');
+app.use(cookieParser());
+app.use(express.json()); 
+app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
     res.send(":D");
 });
-
 
 const connectDb = async () => {
     console.log('Checking db connection...');
@@ -34,10 +34,6 @@ const connectDb = async () => {
 
 app.use(express.json()); 
 
-// app.use('/user', userRouter);
-// app.use("/tasks", taskRouter);
-// app.use('/rooms', roomRouter);
-
 (async () => {
     await connectDb();
     const port = process.env.PORT || 8080;
@@ -46,7 +42,4 @@ app.use(express.json());
     });
 })();
 
-    // const port = process.env.PORT || 8080;
-    // app.listen(port, () => {
-    //     console.log('server running on port', port);
-    // });
+app.use('/auth', AutorizationRouter);

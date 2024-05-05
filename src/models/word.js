@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Word.init({
-    id: DataTypes.NUMBER,
     word: DataTypes.STRING,       
     meaning: DataTypes.STRING,
     fakeMeaning: DataTypes.ARRAY(DataTypes.STRING),
