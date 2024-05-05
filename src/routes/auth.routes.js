@@ -1,5 +1,6 @@
 const AuthController = require('../controllers/auth.controller');
 const {body} = require('express-validator');
+const authMiddleware = require('../middlewares/auth.middleware');
 
 const Router = require('express').Router;
 
@@ -9,11 +10,11 @@ AutorizationRouter.post('/registration',
     body("email").isEmail(),
     body("password").isLength({min: 3, max: 32}),
     AuthController.registration);
-AutorizationRouter.post('/login');
-AutorizationRouter.post('/logout');
+AutorizationRouter.post('/login', AuthController.login);
+AutorizationRouter.post('/logout', AuthController.logout);
 AutorizationRouter.post('/activate/:link', AuthController.activate);
-AutorizationRouter.get('/refresh');
+AutorizationRouter.get('/refresh', AuthController.refresh);
 
-AutorizationRouter.get('/users');
+AutorizationRouter.get('/users', authMiddleware, AuthController.getUsers);
 
 module.exports = AutorizationRouter;
