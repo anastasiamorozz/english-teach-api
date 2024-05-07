@@ -2,22 +2,32 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Tokens', {
+    await queryInterface.createTable('UserWords', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user: {
+      userId: {
         type: Sequelize.INTEGER,
-        references:{
-          model: "Users",
-          key: "id"
-        }
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      refreshToken: {
-        type: Sequelize.STRING
+      wordId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Words',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -30,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Tokens');
+    await queryInterface.dropTable('UserWords');
   }
 };
