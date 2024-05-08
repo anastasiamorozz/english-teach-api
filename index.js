@@ -6,6 +6,7 @@ const { sequelize } = require('./src/models/');
 const AutorizationRouter = require('./src/routes/auth.routes');
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./src/middlewares/error.middleware");
+const UserRouter = require("./src/routes/user.routes");
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerSpec = require('./swagger');
 
@@ -43,3 +44,4 @@ app.use(express.json());
 })();
 
 app.use('/auth', AutorizationRouter);
+app.use('/user', UserRouter);
