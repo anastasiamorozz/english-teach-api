@@ -1,3 +1,4 @@
+const UserDto = require('../dtos/user.dto')
 const {User, UserFollowers} = require('../models')
 
 class UserService{
@@ -48,6 +49,72 @@ class UserService{
         })
 
         return unsubscribe;
+    }
+
+    async getUser(userId){
+        const isUserFollower = await User.findOne({
+            where:{
+                id: userId
+            }
+        })
+
+        return isUserFollower;
+    }
+
+    async getFollowers(userId) {
+        const findUserFollowers = await UserFollowers.findAll({
+            where: {
+                followerId: userId
+            }
+        });
+    
+        if (!findUserFollowers || findUserFollowers.length === 0) {
+            throw new Error("No Followers");
+        }
+    
+        const promises = findUserFollowers.map(async element => {
+            const isUserFollower = await User.findOne({
+                where: {
+                    id: element.userId
+                }
+            });
+    
+            if (isUserFollower) {
+                const user = new UserDto(isUserFollower);
+                return user;
+            }
+        });
+    
+        const followers = await Promise.all(promises);
+        return followers.filter(Boolean);
+    }
+    
+    async getSubscriptions(userId) {
+        const findUserSubscriptuons = await UserFollowers.findAll({
+            where: {
+                userId
+            }
+        });
+    
+        if (!findUserSubscriptuons || findUserSubscriptuons.length === 0) {
+            throw new Error("No Subscriptions");
+        }
+    
+        const promises = findUserSubscriptuons.map(async element => {
+            const isUserFollower = await User.findOne({
+                where: {
+                    id: element.followerId
+                }
+            });
+    
+            if (isUserFollower) {
+                const user = new UserDto(isUserFollower);
+                return user;
+            }
+        });
+    
+        const subcs = await Promise.all(promises);
+        return subcs.filter(Boolean);
     }
 }
 

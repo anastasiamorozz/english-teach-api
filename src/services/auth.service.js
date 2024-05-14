@@ -54,7 +54,7 @@ class AuthService {
             }
         })
         if(!user) {
-            throw new Error(`User with email ${userEmail} doesn't exists`)
+            throw new Error(`User with email ${email} doesn't exists`)
         }
 
         const isPassEquals = await bcrypt.compare(password, user.password);
@@ -84,9 +84,9 @@ class AuthService {
         const userData = tokenService.validateRefreshToken(refreshToken);
         const tokenFromDb = await tokenService.findToken(refreshToken);
         if (!userData || !tokenFromDb) {
-            throw new Error('User is unauthorized');
+            return('User is unauthorized');
         }
-        const user = await User.findById({
+        const user = await User.findOne({
             where:{
                 id: userData.id
             }

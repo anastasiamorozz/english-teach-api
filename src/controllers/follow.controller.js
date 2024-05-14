@@ -16,9 +16,8 @@ class FollowController{
             }
 
             const followAction = userService.follow(user.id, followerId);
-            return res.json(followAction);
+            return res.json({followAction});
         }catch(e){
-            // throw new Error("Something get wrong with following")
             next(e)
         }
     }
@@ -37,7 +36,7 @@ class FollowController{
             }
 
             const unfollowAction = userService.unfollow(user.id, followerId)
-            return res.json(unfollowAction);
+            return res.json({unfollowAction});
         }catch(e){
             next(e)
         }
@@ -45,17 +44,31 @@ class FollowController{
 
     async getFollowers(req, res, next){
         try{
+            const {refreshToken} = req.cookies;
+            const user = tokenService.validateRefreshToken(refreshToken);
+            if(!user){
+                throw new Error('Can`t find user');
+            }
 
+            const followers = await userService.getFollowers(user.id);
+            return res.json(followers);
         }catch(e){
-            throw new Error
+            next(e);
         }
     }
 
     async getSubscriptions(req, res, next){
         try{
+            const {refreshToken} = req.cookies;
+            const user = tokenService.validateRefreshToken(refreshToken);
+            if(!user){
+                throw new Error('Can`t find user');
+            }
 
+            const subscriptions = await userService.getSubscriptions(user.id);
+            return res.json(subscriptions);
         }catch(e){
-            throw new Error
+            next(e);
         }
     }
 }
