@@ -7,10 +7,10 @@ const AutorizationRouter = require('./src/routes/auth.routes');
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./src/middlewares/error.middleware");
 const UserRouter = require("./src/routes/user.routes");
-// const swaggerUi = require('swagger-ui-express');
-// const swaggerSpec = require('./swagger');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./src/docs/swagger_output.json');
 
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(cors({
     credentials: true,

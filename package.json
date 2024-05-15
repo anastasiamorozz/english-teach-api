@@ -30,6 +30,7 @@
     "pgvector": "^0.1.8",
     "sequelize": "^6.37.2",
     "sequelize-file": "^0.3.0",
+    "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"
