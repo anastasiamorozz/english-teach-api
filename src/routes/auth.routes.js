@@ -12,9 +12,9 @@ AutorizationRouter.post('/registration',
     AuthController.registration);
 AutorizationRouter.post('/login', AuthController.login);
 AutorizationRouter.post('/logout', AuthController.logout);
-AutorizationRouter.post('/activate/:link', AuthController.activate);
+AutorizationRouter.get('/activate/:link', AuthController.activate);
 AutorizationRouter.get('/refresh', AuthController.refresh);
 
-AutorizationRouter.get('/users', authMiddleware, AuthController.getUsers);
+// AutorizationRouter.get('/users', authMiddleware, AuthController.getUsers);
 
 module.exports = AutorizationRouter;

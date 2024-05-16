@@ -16,7 +16,7 @@ class FollowController{
             }
 
             const followAction = userService.follow(user.id, followerId);
-            return res.json({followAction});
+            return res.json(followAction);
         }catch(e){
             next(e)
         }
@@ -36,7 +36,7 @@ class FollowController{
             }
 
             const unfollowAction = userService.unfollow(user.id, followerId)
-            return res.json({unfollowAction});
+            return res.json(unfollowAction);
         }catch(e){
             next(e)
         }

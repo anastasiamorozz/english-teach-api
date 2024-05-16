@@ -116,6 +116,17 @@ class UserService{
         const subcs = await Promise.all(promises);
         return subcs.filter(Boolean);
     }
+
+    async changeUserRole(id){
+        const user = await User.findOne({
+            where:{
+                id
+            }
+        })
+
+        user.isAdmin = true;
+        user.save();
+    }
 }
 
 module.exports = new UserService()
