@@ -124,7 +124,7 @@ class UserService{
             }
         })
 
-        user.isAdmin = true;
+        user.isAdmin = !user.isAdmin;
         user.save();
     }
 }
