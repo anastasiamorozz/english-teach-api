@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const {Word} = require('../models')
+const {UserWords, Word} = require('../models')
 
 class WordService{
     async createWord(word, meaning, fakeMeaning, topic){
@@ -50,6 +50,47 @@ class WordService{
                 }
             })
             return words;
+        }catch(e){
+            console.log(e)
+        }
+    }
+
+    async saveWordsCount(newWords, userId){
+        try{
+            const user = await UserWords.findOne({
+                where: {id: userId}
+            })
+
+            if(!user){
+                await UserWords.create({
+                    userId,
+                    words: newWords.length,
+                })
+            }
+            else{
+                user.words += newWords.length;
+                await user.save();
+            }
+        }catch(e){
+            console.log(e)
+        }
+    }
+
+    async getAnswer(wordId, answer){
+        try{
+            const word = await Word.findOne({
+                where: {id: wordId}
+            })
+            if(!word){
+                throw new Error("Can`t find word")
+            }
+
+            if(word.meaning == answer){
+                return true;
+            }
+            else{ 
+                return false;
+            }
         }catch(e){
             console.log(e)
         }

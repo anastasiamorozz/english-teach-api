@@ -14,5 +14,7 @@ TestRouter.get('/topic/words', testController.getTopicWords);
 TestRouter.get('/topics', testController.getTopics);
 TestRouter.delete('/word/delete', adminMiddleware, testController.deleteWord);
 TestRouter.get('/word/search', testController.searchWord);
+TestRouter.get('/result', testController.getResult);
+TestRouter.post('/answer', testController.answering);
 
 module.exports = TestRouter;

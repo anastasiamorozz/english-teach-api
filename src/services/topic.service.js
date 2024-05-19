@@ -26,5 +26,28 @@ class TopicService{
 
         return userTopic;
     }
+
+    async saveUserTopic(userId, topicId){
+        try{
+            const user = await User.findOne({
+                where: {id: userId}
+            })
+            if(!user){
+                throw new Error('User not found')
+            }
+
+            const topic = await Topic.findOne({
+                where: {id: topicId}
+            })
+            if(!topic){
+                throw new Error('Topic not found')
+            }
+
+            await UserTopics.create({userId, topicId});
+
+        }catch(e){
+            console.log(e)
+        }
+    }
 }
 module.exports = new TopicService();

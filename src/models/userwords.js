@@ -21,12 +21,8 @@ module.exports = (sequelize, DataTypes) => {
         key: "id"
       }
     },
-    wordId: {
-      type: DataTypes.NUMBER,
-      references:{
-        model: "Words",
-        key: "id"
-      }
+    words: {
+      type: DataTypes.NUMBER
     }
   }, {
     sequelize,

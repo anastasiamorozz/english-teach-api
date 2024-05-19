@@ -19,13 +19,8 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      wordId: {
+      words: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Words',
-          key: 'id'
-        },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },

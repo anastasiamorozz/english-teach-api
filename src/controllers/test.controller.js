@@ -69,23 +69,26 @@ class TestController{
 
     async getResult(req, res, next){
         try{
+            const {topicId, correctAnswers, wrongAnswers, } = req.body;
+            if(!topicId || !correctAnswers || !wrongAnswers){
+                throw new Error('Topic id, correctAnswers and wrongAnswers are required')
+            }
 
-        }catch(e){
-            next(e)
-        }
-    }
+            const {refreshToken} = req.cookies;
+            const user = tokenService.validateRefreshToken(refreshToken);
+            if(!user){
+                throw new Error('Can`t find user');
+            }
 
-    async calculateProgressInPercentages(req, res, next){
-        try{
-
-        }catch(e){
-            next(e)
-        }
-    }
-
-    async calculateLearningWords(req, res, next){
-        try{
-
+            const words = wordService.saveWordsCount(correctAnswers, user.id);
+            // const topic = topicService.saveUserTopic(user.id, topicId);
+            if(!words){
+                throw new Error('Something get wrong and words not saved')
+            }
+            // if(!topic){
+            //     throw new Error('Something get wrong and topic not started')
+            // }
+            return res.json(200);
         }catch(e){
             next(e)
         }
@@ -152,7 +155,9 @@ class TestController{
 
     async answering(req, res, next){
         try{
-
+            const {wordId, answer} = req.body;
+            const word = await wordService.getAnswer(wordId, answer);
+            return res.json(word);
         }catch(e){
             next(e)
         }
@@ -160,8 +165,8 @@ class TestController{
 
     async searchWord(req, res, next){
         try{
-            const {word} = req.body;
-            const words = await wordService.searchWord(word);
+            const {word, answer} = req.body;
+            const words = await wordService.searchWord(word, answer);
             return res.json(words);
         }catch(e){
             next(e)
