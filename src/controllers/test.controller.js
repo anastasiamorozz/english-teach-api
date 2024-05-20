@@ -36,7 +36,8 @@ class TestController{
 
     async getTopics(req, res, next){
         try{
-            const topics = await Topic.findAll();
+            const {page, pageSize}=req.body;
+            const topics = await topicService.getAllTopics(page, pageSize);
             res.json(topics);
         }catch(e){
             next(e)
@@ -120,7 +121,8 @@ class TestController{
 
     async getAllWords(req, res, next){
         try{
-            const words = await wordService.getAllWords();
+            const {page, pageSize}=req.body;
+            const words = await wordService.getAllWords(page, pageSize);
             return res.json(words);
         }catch(e){
             next(e)

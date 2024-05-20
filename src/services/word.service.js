@@ -20,14 +20,31 @@ class WordService{
         }
     }
 
-    async getAllWords(){
-        try{
-            const words = await Word.findAll();
-            return words;
-        }catch(e){
-            console.log(e)
+    async getAllWords(page, pageSize) {
+        try {
+            const offset = (page - 1) * pageSize;
+            
+            const words = await Word.findAll({
+                limit: pageSize,
+                offset: offset
+            });
+            
+            const totalWords = await Word.count();
+            const totalPages = Math.ceil(totalWords / pageSize);
+    
+            return {
+                data: words,
+                meta: {
+                    totalWords: totalWords,
+                    totalPages: totalPages,
+                    currentPage: page
+                }
+            };
+        } catch (e) {
+            console.log(e);
         }
     }
+    
 
     async getTopicWords(topic){
         try{

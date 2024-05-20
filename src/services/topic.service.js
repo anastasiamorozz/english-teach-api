@@ -1,6 +1,31 @@
 const {User, UserTopics, Topic} = require('../models')
 
 class TopicService{
+    async getAllTopics(page, pageSize){
+        try {
+            const offset = (page - 1) * pageSize;
+            
+            const topics = await Topic.findAll({
+                limit: pageSize,
+                offset: offset
+            });
+            
+            const totalTopics = await Topic.count();
+            const totalPages = Math.ceil(totalTopics / pageSize);
+    
+            return {
+                data: topics,
+                meta: {
+                    totalWords: totalTopics,
+                    totalPages: totalPages,
+                    currentPage: page
+                }
+            };
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     async start(userId, topicId){
         const user = await User.findOne({
             where: {id: userId}
