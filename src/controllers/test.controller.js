@@ -69,6 +69,7 @@ class TestController{
     }
 
     async getResult(req, res, next){
+
         try{
             const {topicId, correctAnswers, wrongAnswers, } = req.body;
             if(!topicId || !correctAnswers || !wrongAnswers){
@@ -82,22 +83,20 @@ class TestController{
             }
 
             const words = wordService.saveWordsCount(correctAnswers, user.id);
-            // const topic = topicService.saveUserTopic(user.id, topicId);
             if(!words){
                 throw new Error('Something get wrong and words not saved')
             }
-            // if(!topic){
-            //     throw new Error('Something get wrong and topic not started')
-            // }
             return res.json(200);
         }catch(e){
             next(e)
         }
     }
 
-    async searchTopic(req, res, next){ //vector search by title and level
+    async searchTopic(req, res, next){
         try{
-
+            const {title, level, page, limit} = req.body;
+            const result = await topicService.search(title, level, page, limit);
+            return res.json(result);
         }catch(e){
             next(e)
         }
