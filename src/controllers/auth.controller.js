@@ -8,8 +8,8 @@ class AuthController {
             if (!errors.isEmpty()) {
                 return next( new Error('Not correct email or password!', errors.array()))
             }
-            const {email, password, firstName, lastName, photo} = req.body;
-            const userData = await authService.registration(email, password, firstName, lastName, photo);
+            const {email, password, firstName, lastName} = req.body;
+            const userData = await authService.registration(email, password, firstName, lastName);
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.json(userData);
         } catch (e) {

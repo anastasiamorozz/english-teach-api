@@ -34,16 +34,18 @@ class TokenService {
     async saveToken(userId, refreshToken){
         const tokenData = await Token.findOne({
             where: {
-                user:{ 
-                    [Sequelize.Op.eq]: userId
-                }
+                user:userId
             }
         })
+        console.log("refreshToken: ", refreshToken)
         if(tokenData){
             tokenData.refreshToken = refreshToken;
-            return tokenData.save();
+            tokenData.save()
+            return 0;
         }
+        
         const token = await Token.create({user: userId, refreshToken})
+        
         return token
     }
 

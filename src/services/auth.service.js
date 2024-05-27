@@ -4,9 +4,10 @@ const uuid = require('uuid')
 const mailService = require('./mail.service')
 const tokenService = require('./token.service')
 const UserDto = require('../dtos/user.dto')
+const imageService = require('./image.service')
 
 class AuthService {
-    async registration(userEmail, password, firstName, lastName, photo){
+    async registration(userEmail, password, firstName, lastName){
         const candidate = await User.findOne({
             where: {
                 email: userEmail
@@ -18,8 +19,7 @@ class AuthService {
         const hashPassword = await bcrypt.hash(password, 3)
         const activationLink = uuid.v4()
 
-
-        const newUser = await User.create({firstName, lastName, photo, email: String(userEmail), password: String(hashPassword), isAdmin: false, isActivated: false,  activationLink})
+        const newUser = await User.create({firstName, lastName, email: String(userEmail), password: String(hashPassword), isAdmin: false, isActivated: false,  activationLink})
         await mailService.sendActivationMail(userEmail, `${process.env.API_URL}/auth/activate/${activationLink}`)
 
         const userDto = new UserDto(newUser); // id, email, isActivated

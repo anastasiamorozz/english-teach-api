@@ -201,6 +201,19 @@ class UserService{
             return 'No one exists with this name';
         }
     }
+
+    async changeAvatar(userId, url){
+        const user = await User.findOne({
+            where: { id: userId }
+        })
+
+        if(!user){
+            throw new Error('User not found')
+        }
+
+        user.photo = url;
+        user.save();
+    }
 }
 
 module.exports = new UserService()
